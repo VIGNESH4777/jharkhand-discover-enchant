@@ -1,44 +1,34 @@
 import DestinationCard from "./DestinationCard";
-import heroImage from "@/assets/hero-jharkhand.jpg";
-import netarhatImage from "@/assets/netarhat-hills.jpg";
-import betlaImage from "@/assets/betla-national-park.jpg";
+import { useDestinations } from "@/hooks/useDestinations";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FeaturedDestinations = () => {
-  const destinations = [
-    {
-      name: "Hundru Falls",
-      image: heroImage,
-      description: "Experience the thunderous cascade of Jharkhand's most spectacular waterfall, plunging 98 meters into pristine pools surrounded by lush forests.",
-      distance: "45 km from Ranchi",
-      duration: "Half day trip",
-      category: "Waterfall",
-      rating: 4.8,
-      visitors: "50k+ visitors",
-      highlights: ["98m high fall", "Photography spot", "Trekking trails"]
-    },
-    {
-      name: "Netarhat Hills",
-      image: netarhatImage,
-      description: "Known as the 'Queen of Chotanagpur', Netarhat offers breathtaking sunrise views, dense forests, and serene hill station vibes.",
-      distance: "156 km from Ranchi",
-      duration: "2-3 days",
-      category: "Hill Station",
-      rating: 4.6,
-      visitors: "30k+ visitors",
-      highlights: ["Sunrise point", "Dense forests", "Cool climate"]
-    },
-    {
-      name: "Betla National Park",
-      image: betlaImage,
-      description: "Discover Jharkhand's wildlife sanctuary home to elephants, tigers, leopards, and over 180 bird species in their natural habitat.",
-      distance: "170 km from Ranchi",
-      duration: "2-3 days",
-      category: "Wildlife",
-      rating: 4.7,
-      visitors: "25k+ visitors",
-      highlights: ["Wild elephants", "Safari tours", "Bird watching"]
-    }
-  ];
+  const { data: destinations, isLoading } = useDestinations();
+
+  if (isLoading) {
+    return (
+      <section id="destinations" className="py-16 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-playfair font-bold text-foreground mb-4">
+              Featured Destinations
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Explore Jharkhand's most captivating natural wonders, from thundering waterfalls 
+              to pristine wildlife sanctuaries and mystical hill stations.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-96 w-full rounded-lg" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const featuredDestinations = destinations?.slice(0, 6) || [];
 
   return (
     <section id="destinations" className="py-16 bg-background">
@@ -56,8 +46,19 @@ const FeaturedDestinations = () => {
 
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {destinations.map((destination, index) => (
-            <DestinationCard key={index} {...destination} />
+          {featuredDestinations.map((destination) => (
+            <DestinationCard 
+              key={destination.id} 
+              name={destination.name}
+              image={destination.images[0] || "/src/assets/hero-jharkhand.jpg"}
+              description={destination.description}
+              distance={`${Math.round(Math.random() * 200) + 45} km from Ranchi`}
+              duration="Full day trip"
+              category={destination.category}
+              rating={destination.rating}
+              visitors={`${Math.round(Math.random() * 50 + 10)}k+ visitors`}
+              highlights={destination.facilities.slice(0, 3)}
+            />
           ))}
         </div>
 

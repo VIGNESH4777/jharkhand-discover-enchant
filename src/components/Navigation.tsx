@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin, Menu, X, Globe, MessageCircle, Search } from "lucide-react";
+import { UserMenu } from "./UserMenu";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,9 +45,7 @@ const Navigation = () => {
               <MessageCircle className="w-4 h-4 mr-2" />
               AI Guide
             </Button>
-            <Button className="bg-primary hover:bg-primary-glow text-primary-foreground">
-              Plan Your Trip
-            </Button>
+            <UserMenu />
           </div>
 
           {/* Mobile menu button */}
